@@ -1,0 +1,12 @@
+Package: xerces_source
+Version: 2.8.0
+Maintainer: Viz One <transcoding@vizrt.com>
+IncludeFiles: src
+IncludeFiles: pasta/wscript
+ConformanceLevel: 4
+Publishable: yes
+Keywords: c++, source, waf
+Summary: PaSta bundle of xerces 2.8.0 for recursive builds with waf
+
+This package contains the source of xerces 2.8.0. The package also includes a
+wscript file for building recursive with waf.
