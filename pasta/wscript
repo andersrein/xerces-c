@@ -1,0 +1,54 @@
+#!/usr/bin/python
+
+from waflib import Utils
+
+PLATFORM = Utils.unversioned_sys_platform()
+
+def build(ctx):
+    excludes = []
+
+    if PLATFORM == "win32":
+        excludes = [ ]
+
+        src_node = ctx.path.find_node("src/xercesc")
+
+        sources = []
+        sources += src_node.find_node("parsers").ant_glob("*.cpp", excl=excludes)
+        sources += src_node.find_node("internal").ant_glob("*.cpp", excl=excludes)
+        sources += src_node.find_node("util").ant_glob("*.cpp", excl=excludes)
+        sources += src_node.find_node("util/regx").ant_glob("*.cpp", excl=excludes)
+        sources += src_node.find_node("util/Platforms/Win32").ant_glob("*.cpp", excl=excludes)
+        sources += src_node.find_node("util/MsgLoaders/Win32").ant_glob("*.cpp", excl=excludes)
+        sources += src_node.find_node("util/Transcoders/Win32").ant_glob("*.cpp", excl=excludes)
+        sources += src_node.find_node("validators").ant_glob("*.cpp", excl=excludes)
+        sources += src_node.find_node("validators/datatype").ant_glob("*.cpp", excl=excludes)
+        sources += src_node.find_node("validators/common").ant_glob("*.cpp", excl=excludes)
+        sources += src_node.find_node("validators/schema").ant_glob("*.cpp", excl=excludes)
+        sources += src_node.find_node("validators/schema/identity").ant_glob("*.cpp", excl=excludes)
+        sources += src_node.find_node("validators/DTD").ant_glob("*.cpp", excl=excludes)
+        sources += src_node.find_node("framework").ant_glob("*.cpp", excl=excludes)
+        sources += src_node.find_node("framework/psvi").ant_glob("*.cpp", excl=excludes)
+        sources += src_node.find_node("sax").ant_glob("*.cpp", excl=excludes)
+        sources += src_node.find_node("sax2").ant_glob("*.cpp", excl=excludes)
+        sources += src_node.find_node("dom").ant_glob("*.cpp", excl=excludes)
+        sources += src_node.find_node("dom/impl").ant_glob("*.cpp", excl=excludes)
+
+    ctx(features="cxx cxxshlib",
+        source=sources,
+        includes=[ctx.path.find_node("src").abspath()],
+        export_includes=[ctx.path.find_node("src").abspath()],
+        use="OS_LIBS",
+        target="xercesc",
+        defines=[
+            "_WIN32_WINNT=0x0501",
+            "PROJ_PARSERS=1",
+            "PROJ_XMLPARSER=1",
+            "PROJ_XMLUTIL=1",
+            "PROJ_VALIDATORS=1",
+            "PROJ_SAX4C=1",
+            "PROJ_SAX2=1",
+            "PROJ_DOM=1",
+            "XML_USE_WIN32_TRANSCODER=1",
+            "XML_USE_WIN32_MSGLOADER=1",
+            "WIN64=1"
+        ])
